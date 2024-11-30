@@ -15,10 +15,10 @@ export const Header = () => {
 
     return (
         <Flex justify="space-between">
-
-            <Flex><AlfaScoresIosMIcon style={{color: colors.primary}}/> льфа бизнес</Flex>
-            <Flex>   {location.pathname !== PageRoutes.MAIN && <ArrowBack/>}</Flex>
-
+            <Flex gap={15}>
+                <Flex><AlfaScoresIosMIcon style={{color: colors.primary}}/> льфа бизнес</Flex>
+                <Flex>   {location.pathname !== PageRoutes.MAIN && <ArrowBack/>}</Flex>
+            </Flex>
             <Flex gap={15}>
 
                 <IconButton

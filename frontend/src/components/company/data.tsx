@@ -12,6 +12,7 @@ export enum ButtonText{
     SIGNATURE = 'На подпись',
     SIMPLE_CLAIM = 'Просто всех послать',
     HARD_CLAIM = ' Конструктивно всех послать',
+    SEND = ' Отправить',
 }
 
 export const data: Data[] = [

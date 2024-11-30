@@ -1,15 +1,15 @@
-import React from 'react';
 import {Table} from "@alfalab/core-components/table";
 import {Amount} from "@alfalab/core-components/amount";
 import {Typography} from '@alfalab/core-components/typography';
 import {data} from "./data";
+import {useMemo, useState} from "react";
 
 export const CompanyTable = () => {
 
-    const [perPage, setPerPage] = React.useState(8);
-    const [page, setPage] = React.useState(0);
+    const [perPage, setPerPage] = useState(8);
+    const [page, setPage] = useState(0);
 
-    const currentPageData = React.useMemo(() => {
+    const currentPageData = useMemo(() => {
         return data.slice(page * perPage).slice(0, perPage);
     }, [data, page, perPage]);
 

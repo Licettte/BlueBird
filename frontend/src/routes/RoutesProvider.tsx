@@ -12,8 +12,8 @@ export const RoutesProvider: FC = () => {
     const authorizedRouter = createBrowserRouter(
         createRoutesFromElements(
             <Route path={PageRoutes.MAIN} element={<MainPage/>}>
-                <Route index element={<Signatures/>}/>
-                <Route path={PageRoutes.COMPANY_TABLE} element={<CompanyTable/>}/>
+                <Route index element={<CompanyTable/>}/>
+                <Route path={PageRoutes.SIGNATURES} element={<Signatures/>}/>
                 <Route path={PageRoutes.CLAIM} element={<Claim/>}/>
                 <Route path='*' element={<ErrorPage/>}/>
             </Route>

@@ -10,6 +10,7 @@ export const Top = styled.header`
 export const Content = styled.div`
     margin: 40px 0 0 0;
     flex: 1 1 auto;
+    width: 100%;
 `;
 
 export const Bottom = styled.footer`

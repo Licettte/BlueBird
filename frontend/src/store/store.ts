@@ -1,14 +1,13 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { rememberReducer, rememberEnhancer } from 'redux-remember';
-import {postsReducer} from "./reducers/postsSlice";
+import {timerReducer} from "./reducers/timerSlice";
 
 const rememberedReducers = [
-    'postsReducer',
     'timerReducer',
 ];
 
 const rootReducer = combineReducers({
-    postsReducer
+    timerReducer
 });
 
 const rememberedReducer = rememberReducer(rootReducer);

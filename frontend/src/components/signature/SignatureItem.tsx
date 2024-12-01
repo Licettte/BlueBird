@@ -4,20 +4,31 @@ import {Flex} from "../../styles/Flex";
 import {colors} from "../../styles/styleConstants";
 import {Button} from "@alfalab/core-components-button";
 import ShieldAlfaCheckmarkMIcon from "@alfalab/icons/site/dist/ShieldAlfaCheckmarkMIcon";
+import {Link} from "react-router-dom";
+import {PageRoutes} from "../../routes/PageRoutes";
 
 export const SignatureItem: FC<Signature> = ({name, description}) => {
 
     return (
         <Flex gap={10} dir="column" style={{width: '100%', marginTop: '30px'}}>
-            <Flex style={{fontWeight: 'bolder'}} > {name}</Flex>
+            <Flex style={{fontWeight: 'bolder'}}> {name}</Flex>
 
-            <div style={{margin: '20px',fontSize: '18px', lineHeight: '1.5', color: '#333', width: '70%', textAlign: 'justify',}}>
-                Мы заметили, что вы часто используете простую электронную подпись. Для вашей безопасности и дополнительной
+            <div style={{
+                margin: '20px',
+                fontSize: '18px',
+                lineHeight: '1.5',
+                color: '#333',
+                width: '70%',
+                textAlign: 'justify',
+            }}>
+                Мы заметили, что вы часто используете простую электронную подпись. Для вашей безопасности и
+                дополнительной
                 защиты ваших данных рекомендуем подключить квалифицированную электронную подпись.<br/><br/>
                 Она обеспечивает высокий уровень надежности и полностью соответствует современным требованиям
                 безопасности. С квалифицированной подписью ваши документы и операции будут под надежной
                 защитой.<br/><br/>
-                Если у вас возникнут вопросы или потребуется помощь в подключении, мы будем рады Вам помочь.<br/><br/>
+                Если у вас возникнут вопросы или потребуется помощь в подключении, мы будем рады Вам <Link
+                to={PageRoutes.MAIN} style={{color: colors.dark, fontWeight: "bolder"}}>помочь.</Link> <br/><br/>
                 С заботой о вас и ваших данных,<br/>
                 Альфа-Банк.
             </div>

@@ -1,9 +1,9 @@
 import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {postsActions} from "./reducers/postsSlice";
+import {timerActions} from "./reducers/timerSlice";
 
 const actions = {
-    ...postsActions,
+    ...timerActions,
 
 };
 export const useActions = () => {

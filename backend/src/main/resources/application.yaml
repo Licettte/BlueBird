@@ -1,0 +1,27 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/alfa_hack
+    username: alfa
+    password: hack
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    change-log: classpath:/db/changelog/master-changelog.xml
+    url: jdbc:postgresql://localhost:5432/alfa_hack
+    user: alfa
+    password: hack
+  jpa:
+    properties:
+      hibernate.transaction.coordinator_class: jdbc
+      open-in-view: false
+    hibernate:
+      ddl-auto: none
+  profiles:
+    active: dev
+
+logging:
+  level:
+    org.springframework: INFO
+    liquibase: INFO
+

@@ -28,15 +28,15 @@
 4. npm i
 5. npm start
 
-Либы фронта:
-1. React
-2. TypeScript
-3. Styled-components
-4. RTK Query
-6. Redux Toolkit
-7. Redux remember
-8. StoryBook
-9. React Router
+Либы фронтенда:
+1. React: 18.3.1
+2. TypeScript: 4.9.5
+3. Styled-components:6.1.13
+4. RTK Query:9.1.2
+6. Redux Toolkit: 9.1.2
+7. React Router: 7.0.1
+8. StoryBook:8.4.6
+
 
 Swagger доки по бекенду лежат в /backend/docs/в yaml файле
 

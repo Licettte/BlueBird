@@ -37,3 +37,6 @@
 7. Redux remember
 8. StoryBook
 9. React Router
+
+
+Возможны проблемы из-за CORS, не понятно как его нормально отключить

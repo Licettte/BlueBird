@@ -5,6 +5,8 @@ export const colors = {
     altPrimary: '#030306E0',
     darkNeutral: '#898991',
     thirtyLight: '#468a91',
+    dark: '#5C388AFF',
+    light: '#5C388A51',
 }
 
 export const toggleShadow = '0px 1px 3px 1px rgba(0, 0, 0, 0.12)';

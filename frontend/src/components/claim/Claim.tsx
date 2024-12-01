@@ -3,6 +3,7 @@ import {CustomButton} from "../button/CustomButton";
 import {ButtonText} from "../company/data";
 import {Flex} from "../../styles/Flex";
 import {useState} from "react";
+import {colors} from "../../styles/styleConstants";
 
 const MAX_LENGTH = 50
 export const Claim = () => {
@@ -10,7 +11,7 @@ export const Claim = () => {
     const [isDisabled, setIsDisabled] = useState(false)
     const [isSended, setIsSended] = useState(false)
 
-    const sendClaim= async ()=>{
+    const sendClaim = async () => {
         setIsSended(true)
         setValue('')
     }
@@ -20,7 +21,8 @@ export const Claim = () => {
         setValue(e.target.value)
     }
 
-    const showNotification = isSended ? 'Сообщение успешно доставлено' : 'Что-то пошло не так'
+    const showNotification = isSended ?
+        <span style={{color: colors.darkNeutral}}>Сообщение успешно доставлено</span> : 'Что-то пошло не так'
 
     const showFormForClaim = <>
         Жаловаться сюда
@@ -32,12 +34,11 @@ export const Claim = () => {
         </Flex>
     </>
 
-
     return (
         <Flex align={"center"} justify={"center"} dir={"column"}>
             {isSended ? showNotification : showFormForClaim}
-
-            {isSended && 'Предложить более подходящий вариант подписи'}
+            <Flex style={{marginTop: "50px"}} dir={"column"}>
+            </Flex>
         </Flex>
     );
 };

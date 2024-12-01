@@ -3,15 +3,22 @@ import {Amount} from "@alfalab/core-components/amount";
 import {Typography} from '@alfalab/core-components/typography';
 import {data} from "./data";
 import {useMemo, useState} from "react";
+import {NavigateButton} from "./NavigateButton";
 
 export const CompanyTable = () => {
 
     const [perPage, setPerPage] = useState(8);
     const [page, setPage] = useState(0);
 
+   const fullData =data.map((item) => ({
+        ...item,
+        button: <NavigateButton documentId={item.id} />,
+    }));
+
     const currentPageData = useMemo(() => {
-        return data.slice(page * perPage).slice(0, perPage);
+        return fullData.slice(page * perPage).slice(0, perPage);
     }, [data, page, perPage]);
+
 
     return (
         <Table width='800px'>
@@ -47,7 +54,7 @@ export const CompanyTable = () => {
 
                         <Table.TCell>
                             <Typography.Text view='primary-small' tag='div'>
-                                {row.button}
+                                     {row.button}
                             </Typography.Text>
                         </Table.TCell>
 

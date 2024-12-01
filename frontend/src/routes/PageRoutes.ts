@@ -1,6 +1,7 @@
 export enum PageRoutes {
     MAIN = '/',
     SIGNATURES = '/signatures',
-    COMPANY_TABLE = '/company-table',
+    CABINET = '/cabinet',
     CLAIM = '/claim',
+    CONFIRM = '/confirm',
 }

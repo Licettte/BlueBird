@@ -9,6 +9,7 @@ import {IconButton} from "@alfalab/core-components/icon-button";
 import BriefcaseMIcon from "@alfalab/icons/glyph/dist/BriefcaseMIcon";
 import AlfaScoresIosMIcon from "@alfalab/icons/glyph/dist/AlfaScoresIosMIcon";
 import {colors} from "../../../styles/styleConstants";
+import {Link} from "react-router-dom";
 
 export const Header = () => {
     const location = useLocation()
@@ -20,13 +21,15 @@ export const Header = () => {
                 <Flex>   {location.pathname !== PageRoutes.MAIN && <ArrowBack/>}</Flex>
             </Flex>
             <Flex gap={15}>
-
-                <IconButton
-                    view='secondary'
-                    size={32}
-                    icon={BriefcaseMIcon}
-                    style={{color: colors.thirtyLight}}
-                />
+                <Link to={PageRoutes.CABINET}>
+                    <IconButton
+                        view='secondary'
+                        size={32}
+                        icon={BriefcaseMIcon}
+                        style={{color: location.pathname === PageRoutes.SIGNATURES ? colors.dark : colors.thirtyLight}}
+                    >
+                    </IconButton>
+                </Link>
                 <User/>
                 <Logout/>
             </Flex>

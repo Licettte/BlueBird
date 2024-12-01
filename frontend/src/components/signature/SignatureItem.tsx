@@ -1,18 +1,30 @@
 import React, {FC} from "react";
 import {Signature} from "./types";
 import {Flex} from "../../styles/Flex";
-import { toggleShadow} from "../../styles/styleConstants";
+import {colors} from "../../styles/styleConstants";
+import {CustomButton} from "../button/CustomButton";
 
 export const SignatureItem: FC<Signature> = ({name, description}) => {
-    return (
-        <Flex gap={30} dir="column" style={{
-            width: '180px', height: '180px', padding: '15px',
-            borderRadius: '25px',
-            boxShadow: toggleShadow
-        }}>
-            <Flex> {name}</Flex>
-            <Flex>     {description}</Flex>
 
+      return (
+        <Flex gap={10} dir="column" style={{width: '100%', marginTop: '40px'}}>
+            <Flex style={{fontWeight: 'bolder'}}> {name}</Flex>
+
+            <Flex style={{
+                padding: '25px',
+                textAlign: 'justify',
+                width: '75%',
+                lineHeight: '25px',
+
+            }}>
+                {description}
+            </Flex>
+
+            <Flex  justify={"center"} style={{
+                width: '20%'
+            }}>
+                <CustomButton text='Подключить КЭП' color={colors.dark}/>
+            </Flex>
         </Flex>
     );
 };

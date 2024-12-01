@@ -1,0 +1,316 @@
+openapi: 3.0.1
+info:
+  title: API управления документами
+  description: Документация API для работы с документами и подписями.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /api/v1/predict-on-document:
+    post:
+      tags:
+        - client-controller
+      summary: Предсказание на основе документа
+      description: Возвращает предсказанный метод подписи на основе переданных данных.
+      operationId: predictOnDocument
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PredictionRequestPayload'
+        required: true
+      responses:
+        '200':
+          description: Предсказание успешно выполнено
+          content:
+            text/plain: {}
+        '400':
+          description: Неверные данные запроса
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/v1/signed-docs:
+    get:
+      tags:
+        - document-controller
+      summary: Получение подписанных документов клиента
+      description: Возвращает список всех подписанных документов для указанного клиента.
+      operationId: getSignedDocs
+      parameters:
+        - name: clientId
+          in: query
+          description: Идентификатор клиента, для которого нужно получить подписанные документы
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Список подписанных документов успешно получен
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Document'
+        '400':
+          description: Некорректный запрос, отсутствует clientId
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Document'
+        '404':
+          description: Клиент не найден или документы отсутствуют
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Document'
+  /api/v1/predict:
+    get:
+      tags:
+        - client-controller
+      summary: Предсказание метода подписи
+      description: Возвращает предсказанный метод подписи для указанного клиента.
+      operationId: predict
+      parameters:
+        - name: clientId
+          in: query
+          description: Идентификатор клиента
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Предсказание успешно выполнено
+          content:
+            text/plain: {}
+        '404':
+          description: Клиент не найден
+          content:
+            text/plain:
+              schema:
+                type: object
+  /api/v1/current-method:
+    get:
+      tags:
+        - client-controller
+      summary: Получение текущего метода подписи
+      description: Возвращает текущий метод подписи для клиента.
+      operationId: getCurrentMethod
+      parameters:
+        - name: clientId
+          in: query
+          description: Идентификатор клиента
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Успешно получен текущий метод подписи
+          content:
+            text/plain: {}
+        '404':
+          description: Клиент не найден
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/v1/client:
+    get:
+      tags:
+        - client-controller
+      summary: Получение клиента по ID
+      description: Возвращает объект клиента на основе идентификатора клиента.
+      operationId: getClientById
+      parameters:
+        - name: clientId
+          in: query
+          description: Идентификатор клиента
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Клиент успешно найден
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Client'
+        '404':
+          description: Клиент не найден
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/claims-count:
+    get:
+      tags:
+        - client-controller
+      summary: Получение количества жалоб клиента
+      description: Возвращает количество жалоб (`claims`) клиента.
+      operationId: getClaimsCount
+      parameters:
+        - name: clientId
+          in: query
+          description: Идентификатор клиента
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Количество жалоб успешно получено
+          content:
+            '*/*':
+              schema:
+                type: integer
+        '404':
+          description: Клиент не найден
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int32
+  /api/v1/allowed-signatures:
+    get:
+      tags:
+        - client-controller
+      summary: Получение доступных методов подписи
+      description: Возвращает список доступных методов подписи на основе наличия мобильного приложения у клиента.
+      operationId: getAllowedSignatures
+      parameters:
+        - name: clientId
+          in: query
+          description: Идентификатор клиента
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Доступные методы успешно получены
+          content:
+            application/json:
+              schema:
+                type: array
+        '404':
+          description: Клиент не найден
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  type: string
+components:
+  schemas:
+    PredictionRequestPayload:
+      type: object
+      properties:
+        clientId:
+          type: integer
+          format: int64
+        documentId:
+          type: string
+        platformType:
+          type: string
+          enum:
+            - desktop
+            - mobile
+    Document:
+      required:
+        - clientId
+        - contractor
+        - creationDate
+        - isSigned
+        - platformType
+      type: object
+      properties:
+        documentId:
+          type: integer
+          format: int64
+        type:
+          type: string
+          enum:
+            - basic
+            - important
+        clientId:
+          type: integer
+          format: int64
+        platformType:
+          type: string
+          enum:
+            - desktop
+            - mobile
+        creationDate:
+          type: string
+          format: date-time
+        isSigned:
+          type: boolean
+        contractor:
+          type: string
+    Client:
+      required:
+        - currentMethod
+        - role
+        - segment
+      type: object
+      properties:
+        clientId:
+          type: integer
+          format: int64
+        organizationId:
+          type: integer
+          format: int32
+        segment:
+          type: string
+          enum:
+            - small
+            - medium
+            - large
+        currentMethod:
+          type: string
+          enum:
+            - sms
+            - paycontrol
+            - qes_application
+            - qes_token
+        role:
+          type: string
+          enum:
+            - employee
+            - director
+        mobileApp:
+          type: boolean
+        availableMethods:
+          type: array
+          items:
+            type: string
+        claims:
+          type: integer
+          format: int32
+        signedDocumentsBasicMobile:
+          minimum: 0
+          type: integer
+          format: int32
+        signedDocumentsBasicWeb:
+          minimum: 0
+          type: integer
+          format: int32
+        signedDocumentsImportantMobile:
+          minimum: 0
+          type: integer
+          format: int32
+        signedDocumentsImportantWeb:
+          minimum: 0
+          type: integer
+          format: int32

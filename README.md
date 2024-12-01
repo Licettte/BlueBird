@@ -41,3 +41,8 @@
 Swagger доки по бекенду лежат в /backend/docs/в yaml файле
 
 Ссылка на видео - https://drive.google.com/file/d/1sbSvz_DXX1n-XCBL5UCy-AlAbythdj0q/view?usp=drive_link
+
+Команда:
+- Алиса Туманская @AliceTum (telegram)
+- Абдулло Халимов @Kepev (telegram)
+- Черных Давид @vegaldn (telegram)

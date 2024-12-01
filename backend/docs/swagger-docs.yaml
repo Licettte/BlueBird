@@ -1,51 +1,179 @@
 openapi: 3.0.1
 info:
-  title: API управления документами
-  description: Документация API для работы с документами и подписями.
+  title: Alfa Backend API
+  description: API для управления клиентами и документами.
   version: 1.0.0
 servers:
-  - url: http://localhost:8080
-    description: Generated server url
+  - url: http://localhost:8080/api/v1
+    description: Локальный сервер
+
 paths:
-  /api/v1/predict-on-document:
-    post:
-      tags:
-        - client-controller
-      summary: Предсказание на основе документа
-      description: Возвращает предсказанный метод подписи на основе переданных данных.
-      operationId: predictOnDocument
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PredictionRequestPayload'
-        required: true
+  /client:
+    get:
+      summary: Получение клиента по ID
+      description: Возвращает объект клиента на основе идентификатора клиента.
+      parameters:
+        - name: clientId
+          in: query
+          required: true
+          description: Идентификатор клиента
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Клиент успешно найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '404':
+          description: Клиент не найден
+
+  /predict:
+    get:
+      summary: Предсказание метода подписи
+      description: Возвращает предсказанный метод подписи для указанного клиента.
+      parameters:
+        - name: clientId
+          in: query
+          required: true
+          description: Идентификатор клиента
+          schema:
+            type: integer
       responses:
         '200':
           description: Предсказание успешно выполнено
           content:
-            text/plain: {}
-        '400':
-          description: Неверные данные запроса
-          content:
-            '*/*':
+            text/plain:
               schema:
                 type: string
-  /api/v1/signed-docs:
+        '404':
+          description: Клиент не найден
+
+  /current-method:
     get:
-      tags:
-        - document-controller
-      summary: Получение подписанных документов клиента
-      description: Возвращает список всех подписанных документов для указанного клиента.
-      operationId: getSignedDocs
+      summary: Получение текущего метода подписи
+      description: Возвращает текущий метод подписи для клиента.
       parameters:
         - name: clientId
           in: query
-          description: Идентификатор клиента, для которого нужно получить подписанные документы
           required: true
+          description: Идентификатор клиента
           schema:
             type: integer
-            format: int64
+      responses:
+        '200':
+          description: Успешно получен текущий метод подписи
+          content:
+            text/plain:
+              schema:
+                type: string
+        '404':
+          description: Клиент не найден
+
+  /claims-count:
+    get:
+      summary: Получение количества жалоб клиента
+      description: Возвращает количество жалоб (claims) клиента.
+      parameters:
+        - name: clientId
+          in: query
+          required: true
+          description: Идентификатор клиента
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Количество жалоб успешно получено
+          content:
+            application/json:
+              schema:
+                type: integer
+        '404':
+          description: Клиент не найден
+
+  /allowed-signatures:
+    get:
+      summary: Получение доступных методов подписи
+      description: Возвращает список доступных методов подписи на основе наличия мобильного приложения у клиента.
+      parameters:
+        - name: clientId
+          in: query
+          required: true
+          description: Идентификатор клиента
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Доступные методы успешно получены
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '404':
+          description: Клиент не найден
+
+  /predict-on-document:
+    post:
+      summary: Предсказание на основе документа
+      description: Возвращает предсказанный метод подписи на основе переданных данных.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PredictionRequestPayload'
+      responses:
+        '200':
+          description: Предсказание успешно выполнено
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Неверные данные запроса
+
+  /change-signature:
+    patch:
+      summary: Смена подписи используемой клиентом
+      description: Изменяет текущий метод подписи клиента.
+      parameters:
+        - name: clientId
+          in: query
+          required: true
+          description: Идентификатор клиента
+          schema:
+            type: integer
+        - name: signature
+          in: query
+          required: true
+          description: Новый метод подписи
+          schema:
+            type: string
+            enum: [SMS, EMAIL, QES]
+      responses:
+        '200':
+          description: Подпись успешно изменена
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Ошибка
+
+  /signed-docs:
+    get:
+      summary: Получение подписанных документов клиента
+      description: Возвращает список всех подписанных документов для указанного клиента.
+      parameters:
+        - name: clientId
+          in: query
+          required: true
+          description: Идентификатор клиента
+          schema:
+            type: integer
       responses:
         '200':
           description: Список подписанных документов успешно получен
@@ -55,262 +183,71 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Document'
-        '400':
-          description: Некорректный запрос, отсутствует clientId
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Document'
         '404':
           description: Клиент не найден или документы отсутствуют
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Document'
-  /api/v1/predict:
-    get:
-      tags:
-        - client-controller
-      summary: Предсказание метода подписи
-      description: Возвращает предсказанный метод подписи для указанного клиента.
-      operationId: predict
+        '400':
+          description: Некорректный запрос, отсутствует clientId
+
+  /sign-document:
+    patch:
+      summary: Подписание документа
+      description: Позволяет подписать документ, устанавливая флаг isSigned в true.
       parameters:
-        - name: clientId
+        - name: documentId
           in: query
-          description: Идентификатор клиента
           required: true
+          description: Идентификатор документа, который нужно подписать
           schema:
             type: integer
-            format: int64
       responses:
         '200':
-          description: Предсказание успешно выполнено
-          content:
-            text/plain: {}
+          description: Документ успешно подписан
         '404':
-          description: Клиент не найден
-          content:
-            text/plain:
-              schema:
-                type: object
-  /api/v1/current-method:
-    get:
-      tags:
-        - client-controller
-      summary: Получение текущего метода подписи
-      description: Возвращает текущий метод подписи для клиента.
-      operationId: getCurrentMethod
-      parameters:
-        - name: clientId
-          in: query
-          description: Идентификатор клиента
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: Успешно получен текущий метод подписи
-          content:
-            text/plain: {}
-        '404':
-          description: Клиент не найден
-          content:
-            '*/*':
-              schema:
-                type: string
-  /api/v1/client:
-    get:
-      tags:
-        - client-controller
-      summary: Получение клиента по ID
-      description: Возвращает объект клиента на основе идентификатора клиента.
-      operationId: getClientById
-      parameters:
-        - name: clientId
-          in: query
-          description: Идентификатор клиента
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: Клиент успешно найден
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Client'
-        '404':
-          description: Клиент не найден
-          content:
-            '*/*':
-              schema:
-                type: object
-  /api/v1/claims-count:
-    get:
-      tags:
-        - client-controller
-      summary: Получение количества жалоб клиента
-      description: Возвращает количество жалоб (`claims`) клиента.
-      operationId: getClaimsCount
-      parameters:
-        - name: clientId
-          in: query
-          description: Идентификатор клиента
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: Количество жалоб успешно получено
-          content:
-            '*/*':
-              schema:
-                type: integer
-        '404':
-          description: Клиент не найден
-          content:
-            '*/*':
-              schema:
-                type: integer
-                format: int32
-  /api/v1/allowed-signatures:
-    get:
-      tags:
-        - client-controller
-      summary: Получение доступных методов подписи
-      description: Возвращает список доступных методов подписи на основе наличия мобильного приложения у клиента.
-      operationId: getAllowedSignatures
-      parameters:
-        - name: clientId
-          in: query
-          description: Идентификатор клиента
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: Доступные методы успешно получены
-          content:
-            application/json:
-              schema:
-                type: array
-        '404':
-          description: Клиент не найден
-          content:
-            '*/*':
-              schema:
-                uniqueItems: true
-                type: array
-                items:
-                  type: string
+          description: Документ с указанным ID не найден
+
 components:
   schemas:
+    Client:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        currentMethod:
+          type: string
+          enum: [SMS, EMAIL, QES]
+        mobileApp:
+          type: boolean
+        claims:
+          type: integer
+        signedDocumentsBasicMobile:
+          type: integer
+        signedDocumentsBasicWeb:
+          type: integer
+        signedDocumentsImportantMobile:
+          type: integer
+        signedDocumentsImportantWeb:
+          type: integer
+
     PredictionRequestPayload:
       type: object
       properties:
         clientId:
           type: integer
-          format: int64
         documentId:
-          type: string
+          type: integer
         platformType:
           type: string
-          enum:
-            - desktop
-            - mobile
+
     Document:
-      required:
-        - clientId
-        - contractor
-        - creationDate
-        - isSigned
-        - platformType
       type: object
       properties:
-        documentId:
+        id:
           type: integer
-          format: int64
-        type:
+        name:
           type: string
-          enum:
-            - basic
-            - important
-        clientId:
-          type: integer
-          format: int64
-        platformType:
-          type: string
-          enum:
-            - desktop
-            - mobile
-        creationDate:
-          type: string
-          format: date-time
         isSigned:
           type: boolean
-        contractor:
-          type: string
-    Client:
-      required:
-        - currentMethod
-        - role
-        - segment
-      type: object
-      properties:
-        clientId:
-          type: integer
-          format: int64
-        organizationId:
-          type: integer
-          format: int32
-        segment:
-          type: string
-          enum:
-            - small
-            - medium
-            - large
-        currentMethod:
-          type: string
-          enum:
-            - sms
-            - paycontrol
-            - qes_application
-            - qes_token
-        role:
-          type: string
-          enum:
-            - employee
-            - director
-        mobileApp:
-          type: boolean
-        availableMethods:
-          type: array
-          items:
-            type: string
-        claims:
-          type: integer
-          format: int32
-        signedDocumentsBasicMobile:
-          minimum: 0
-          type: integer
-          format: int32
-        signedDocumentsBasicWeb:
-          minimum: 0
-          type: integer
-          format: int32
-        signedDocumentsImportantMobile:
-          minimum: 0
-          type: integer
-          format: int32
-        signedDocumentsImportantWeb:
-          minimum: 0
-          type: integer
-          format: int32

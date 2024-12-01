@@ -41,7 +41,7 @@ public class ClientController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Клиент успешно найден",
                     content = @Content(schema = @Schema(implementation = Client.class))),
-            @ApiResponse(responseCode = "404", description = "Клиент с указанным ID не найден")
+            @ApiResponse(responseCode = "404", description = "Клиент не найден")
     })
     @GetMapping("/client")
     @Cacheable(value = "clients", key = "#clientId")
@@ -57,7 +57,7 @@ public class ClientController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Предсказание успешно выполнено",
                     content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)),
-            @ApiResponse(responseCode = "404", description = "Клиент с указанным ID не найден")
+            @ApiResponse(responseCode = "404", description = "Клиент не найден")
     })
     @GetMapping(value = "/predict", produces = MediaType.TEXT_PLAIN_VALUE)
     @Cacheable(value = "predictions", key = "#clientId")
@@ -77,7 +77,7 @@ public class ClientController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешно получен текущий метод подписи",
                     content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)),
-            @ApiResponse(responseCode = "404", description = "Клиент с указанным ID не найден")
+            @ApiResponse(responseCode = "404", description = "Клиент не найден")
     })
     @GetMapping("/current-method")
     public ResponseEntity<String> getCurrentMethod(@RequestParam(name = "clientId") @Parameter(description = "Идентификатор клиента") Long clientId) {
@@ -87,12 +87,12 @@ public class ClientController {
 
     @Operation(
             summary = "Получение количества жалоб клиента",
-            description = "Возвращает количество жалоб (`claims`) клиента."
+            description = "Возвращает количество жалоб (claims) клиента."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Количество жалоб успешно получено",
                     content = @Content(schema = @Schema(type = "integer"))),
-            @ApiResponse(responseCode = "404", description = "Клиент с указанным ID не найден")
+            @ApiResponse(responseCode = "404", description = "Клиент не найден")
     })
     @GetMapping("/claims-count")
     public ResponseEntity<Integer> getClaimsCount(@RequestParam(name = "clientId") @Parameter(description = "Идентификатор клиента") Long clientId) {
@@ -108,7 +108,7 @@ public class ClientController {
             @ApiResponse(responseCode = "200", description = "Доступные методы успешно получены",
                     content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(type = "array"))),
-            @ApiResponse(responseCode = "404", description = "Клиент с указанным ID не найден")
+            @ApiResponse(responseCode = "404", description = "Клиент не найден")
     })
     @GetMapping("/allowed-signatures")
     public ResponseEntity<Set<String>> getAllowedSignatures(@RequestParam(name = "clientId") @Parameter(description = "Идентификатор клиента") Long clientId) {
@@ -124,7 +124,6 @@ public class ClientController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Предсказание успешно выполнено",
                     content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)),
-            @ApiResponse(responseCode = "404", description = "Клиент с указанным ID не найден"),
             @ApiResponse(responseCode = "400", description = "Неверные данные запроса")
     })
     @PostMapping("/predict-on-document")
@@ -134,22 +133,20 @@ public class ClientController {
         clientService.updateClient(client, payload.documentId(), payload.platformType());
         return ResponseEntity.ok().body(prediction);
     }
-
     @Operation(
-            summary = "Смена подписи используемой клиентом",
-            description = "Изменяет текущий метод подписи клиента."
+            summary = "Смена подписи использувоемой клиентом",
+            description = "Смена подписи использувоемой клиентом."
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Подпись успешно изменена",
+            @ApiResponse(responseCode = "200", description = "Подпись изменена",
                     content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE)),
-            @ApiResponse(responseCode = "404", description = "Клиент с указанным ID не найден"),
-            @ApiResponse(responseCode = "400", description = "Ошибка в запросе")
+            @ApiResponse(responseCode = "400", description = "Ошибка")
     })
     @PatchMapping("/change-signature")
     @CacheEvict(value = {"predictions", "clients"}, key = "#clientId")
     public ResponseEntity<String> changeCurrentSignature(
             @RequestParam(name = "clientId") Long clientId,
-            @RequestParam(name = "signature") SignatureMethod signature) {
+            @RequestParam(name = "signature") SignatureMethod signature){
         Client client = clientRepository.findById(clientId).orElseThrow(() -> new ClientNotFoundException("Клиент с ID " + clientId + " не найден."));
         client.setCurrentMethod(signature);
         clientRepository.save(client);

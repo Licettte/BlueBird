@@ -12,7 +12,6 @@ interface NavigateButtonProps {
 
 export const NavigateButton: FC<NavigateButtonProps> = ({state, path, text}) => {
     return (
-
         <Link to={path} state={{documentId: state}} style={{width:'100%'}}>
             <CustomButton text={text}/>
         </Link>

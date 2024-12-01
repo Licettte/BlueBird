@@ -56,6 +56,7 @@ export const ConfirmPage = () => {
                     color: colors.darkNeutral,
                     textDecoration: 'underline dashed',
                     textUnderlineOffset: '4px',
+                    cursor: "pointer"
                 }} onClick={handleOpen}> Не приходит код? </Flex>
             </Flex>
 

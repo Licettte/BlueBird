@@ -4,7 +4,6 @@ import {timerActions} from "./reducers/timerSlice";
 
 const actions = {
     ...timerActions,
-
 };
 export const useActions = () => {
     return bindActionCreators(actions, useDispatch());

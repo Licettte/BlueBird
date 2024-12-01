@@ -14,7 +14,7 @@ export const ArrowBack = () => {
                 size={32}
                 icon={ArrowBackMIcon}
             />
-            Назад
+            В главное меню
         </Wrapper>
     );
 };

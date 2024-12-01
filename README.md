@@ -40,6 +40,4 @@
 
 Swagger доки по бекенду лежат в /backend/docs/в yaml файле
 
-Возможны проблемы из-за CORS, не понятно как его нормально отключить
-
 Ссылка на видео - https://drive.google.com/file/d/1sbSvz_DXX1n-XCBL5UCy-AlAbythdj0q/view?usp=drive_link

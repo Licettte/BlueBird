@@ -28,7 +28,7 @@ export const Signatures = () => {
                 <h1>Мы выбрали <span style={{color: colors.dark}}>лучшее </span> для вас</h1>
             </Flex>
 
-            <Flex style={{marginTop: '20px', width: '100%'}}>  {!signature ? showSpinner : showSignature} </Flex>
+            <Flex style={{ width: '100%'}}>  {!signature ? showSpinner : showSignature} </Flex>
 
         </Flex>
     );

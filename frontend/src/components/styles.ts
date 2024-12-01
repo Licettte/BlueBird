@@ -14,7 +14,9 @@ export const Content = styled.div`
 `;
 
 export const Bottom = styled.footer`
-    min-height: 50px;      
+    min-height: 50px;
+    width: 70%;
+
 `;
 
 export const Container = styled(Flex)`

@@ -38,5 +38,6 @@
 8. StoryBook
 9. React Router
 
+Swagger доки по бекенду лежат в /backend/docs/в yaml файле
 
 Возможны проблемы из-за CORS, не понятно как его нормально отключить

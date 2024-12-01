@@ -1,9 +1,10 @@
 import {Table} from "@alfalab/core-components/table";
 import {Amount} from "@alfalab/core-components/amount";
 import {Typography} from '@alfalab/core-components/typography';
-import {data} from "./data";
+import {ButtonText, data} from "./data";
 import {useMemo, useState} from "react";
 import {NavigateButton} from "./NavigateButton";
+import {PageRoutes} from "../../routes/PageRoutes";
 
 export const CompanyTable = () => {
 
@@ -13,7 +14,7 @@ export const CompanyTable = () => {
 
    const fullData =data.map((item) => ({
         ...item,
-        button: <NavigateButton documentId={item.id} />,
+        button: <NavigateButton state={item.id} path={PageRoutes.CONFIRM}  text={ButtonText.SIGNATURE}/>,
     }));
 
     const currentPageData = useMemo(() => {

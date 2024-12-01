@@ -12,6 +12,10 @@ export enum ButtonText {
     SIMPLE_CLAIM = 'Просто всех послать',
     HARD_CLAIM = ' Конструктивно всех послать',
     SEND = ' Отправить',
+    DETAILS = 'Узнать подробнее',
+
+    SET = 'Настроить',
+    CHANGE = 'Сменить',
 }
 
 

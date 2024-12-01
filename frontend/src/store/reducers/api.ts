@@ -3,9 +3,10 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const baseUrl = `https://${'backendUrl'}/`;
 
 export const api = createApi({
-    reducerPath: 'bookFilterApi',
-    baseQuery: fetchBaseQuery({baseUrl, credentials: 'include'}),
-    tagTypes: ['Filters'],
+    reducerPath: 'signature',
+    // baseQuery: fetchBaseQuery({baseUrl, credentials: 'include'}),
+    baseQuery: fetchBaseQuery({baseUrl}),
+    tagTypes: ['Signature'],
     endpoints: (builder) => ({
         getPaperFilters: builder.query<any[], any>({
             query: (params) => ({
@@ -14,7 +15,7 @@ export const api = createApi({
                 params,
             }),
             transformResponse: (response: { data: any [] }) => response.data,
-            providesTags: ['Filters'],
+            providesTags: ['Signature'],
         }),
         startRental: builder.mutation<any, any>({
             query: ({bookId}) => ({
@@ -22,7 +23,7 @@ export const api = createApi({
                 method: 'POST',
             }),
             transformResponse: (response: { data: any }) => response.data,
-            invalidatesTags: ['Filters'],
+            invalidatesTags: ['Signature'],
         }),
     }),
 });

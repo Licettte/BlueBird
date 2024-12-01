@@ -5,14 +5,16 @@ import {Link} from "react-router-dom";
 import {PageRoutes} from "../../routes/PageRoutes";
 
 interface NavigateButtonProps {
-    documentId: number
+    state?: number
+    path: PageRoutes
+    text: ButtonText
 }
 
-export const NavigateButton: FC<NavigateButtonProps> = ({documentId}) => {
+export const NavigateButton: FC<NavigateButtonProps> = ({state, path, text}) => {
     return (
 
-        <Link to={PageRoutes.CONFIRM} state={{documentId: documentId}}>
-            <CustomButton text={ButtonText.SIGNATURE}/>
+        <Link to={path} state={{documentId: state}} style={{width:'100%'}}>
+            <CustomButton text={text}/>
         </Link>
     );
 };

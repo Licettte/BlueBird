@@ -8,6 +8,7 @@ import {NavigateButton} from "./NavigateButton";
 export const CompanyTable = () => {
 
     const [perPage, setPerPage] = useState(8);
+
     const [page, setPage] = useState(0);
 
    const fullData =data.map((item) => ({
